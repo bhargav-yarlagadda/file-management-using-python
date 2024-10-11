@@ -23,19 +23,19 @@ It leverages the `watchdog` library to monitor changes in the source directory a
 
    ```bash
    pip install watchdog
-
+   ```
 ## Configure dirs
-
-source_dir = "C:\\Users\\UserName\\Downloads"
-dest_dir_sfx = "C:\\Users\\UserName\\Documents\\SFX"
-dest_dir_music = "C:\\Users\\UserName\\Documents\\Music"
-dest_dir_video = "C:\\Users\\UserName\\Documents\\Videos"
-dest_dir_image = "C:\\Users\\UserName\\Documents\\Images"
-dest_dir_documents = "C:\\Users\\UserName\\Documents\\Documents"
-
+   ```bash 
+   source_dir = "C:\\Users\\UserName\\Downloads"
+   dest_dir_sfx = "C:\\Users\\UserName\\Documents\\SFX"
+   dest_dir_music = "C:\\Users\\UserName\\Documents\\Music"
+   dest_dir_video = "C:\\Users\\UserName\\Documents\\Videos"
+   dest_dir_image = "C:\\Users\\UserName\\Documents\\Images"
+   dest_dir_documents = "C:\\Users\\UserName\\Documents\\Documents"
+   ```
 
 ## Run the script
 
-     ```bash
-    py index.py
-
+   ```bash
+   py index.py
+   ```
