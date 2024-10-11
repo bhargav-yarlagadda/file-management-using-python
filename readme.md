@@ -1,6 +1,7 @@
 # File Mover Script
 
-This script automatically organizes files into designated directories based on their file types (audio, video, image, and documents) in a specified source directory. It leverages the `watchdog` library to monitor changes in the source directory and move files accordingly.
+This script automatically organizes files into designated directories based on their file types (audio, video, image, and documents) in a specified source directory. 
+It leverages the `watchdog` library to monitor changes in the source directory and move files accordingly.
 
 ## Features
 
@@ -10,7 +11,7 @@ This script automatically organizes files into designated directories based on t
 - Places documents into a dedicated documents directory.
 - Supports unique file naming to avoid overwriting.
 
-## Prerequisites
+## Dependencies
 
 - Python 3.x
 - `watchdog` library
