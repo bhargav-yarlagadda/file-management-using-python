@@ -2,9 +2,7 @@ from os import scandir, rename
 from os.path import splitext, exists, join
 from shutil import move
 from time import sleep
-
 import logging
-
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -12,13 +10,14 @@ from watchdog.events import FileSystemEventHandler
 
 
 # ? folder to track e.g. Windows: "C:\\Users\\UserName\\Downloads"
-source_dir = ""
+source_dir = f"C:\\Users\\dir_to_be_monitered"
 
-dest_dir_sfx = ""
-dest_dir_music = ""
-dest_dir_video = ""
-dest_dir_image = ""
-dest_dir_documents = ""
+# the directories of corresponding segregated directories
+dest_dir_sfx = f"C:\\Users\\sfx_dest"
+dest_dir_music = f"C:\\Users\\music"
+dest_dir_video = f"C:\\Users\\video_dest"
+dest_dir_image = f"C:\\Users\\image_dest"
+dest_dir_documents = f"C:\\Users\\document_dest"
 
 # ? supported image types
 image_extensions = [".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi", ".png", ".gif", ".webp", ".tiff", ".tif", ".psd", ".raw", ".arw", ".cr2", ".nrw",
@@ -56,14 +55,45 @@ def move_file(dest, entry, name):
 class MoverHandler(FileSystemEventHandler):
     # ? THIS FUNCTION WILL RUN WHENEVER THERE IS A CHANGE IN "source_dir"
     # ? .upper is for not missing out on files with uppercase extensions
+
+    # the problem with below functino is that is assumes that the src dir will always be empty hence it loops through all of them,but we need only the recently downloaded file to be moved into a new destination. so below is the modified code
+
+    # def on_modified(self, event):
+    #     with scandir(source_dir) as entries:
+    #         for entry in entries:
+    #             name = entry.name
+    #             self.check_audio_files(entry, name)
+    #             self.check_video_files(entry, name)
+    #             self.check_image_files(entry, name)
+    #             self.check_document_files(entry, name)
+
     def on_modified(self, event):
+        if event.is_directory:  # Ignore directory modifications
+            return
+        
+        most_recent_file = None
+        most_recent_time = 0
+
         with scandir(source_dir) as entries:
             for entry in entries:
-                name = entry.name
-                self.check_audio_files(entry, name)
-                self.check_video_files(entry, name)
-                self.check_image_files(entry, name)
-                self.check_document_files(entry, name)
+                if entry.is_file():  # Process only files
+                    # Get the last modified time
+                    modified_time = entry.stat().st_mtime
+                    
+                    # Check if this file is the most recently modified one
+                    if modified_time > most_recent_time:
+                        most_recent_time = modified_time
+                        most_recent_file = entry
+
+        # If we found a most recent file, move it
+        if most_recent_file:
+            name = most_recent_file.name
+            
+            # Check the file type and move it accordingly
+            self.check_audio_files(most_recent_file, name)
+            self.check_video_files(most_recent_file, name)
+            self.check_image_files(most_recent_file, name)
+            self.check_document_files(most_recent_file, name)
 
     def check_audio_files(self, entry, name):  # * Checks all Audio Files
         for audio_extension in audio_extensions:
@@ -105,8 +135,10 @@ if __name__ == "__main__":
     observer.schedule(event_handler, path, recursive=True)
     observer.start()
     try:
+        print("Script Started")
         while True:
             sleep(10)
     except KeyboardInterrupt:
+        print("Script Terminated")
         observer.stop()
     observer.join()
