@@ -12,7 +12,7 @@ from watchdog.events import FileSystemEventHandler
 # ? folder to track e.g. Windows: "C:\\Users\\UserName\\Downloads"
 source_dir = f"C:\\Users\\dir_to_be_monitered"
 
-# the directories of corresponding segregated directories
+# the destination directories of corresponding segregated directories
 dest_dir_sfx = f"C:\\Users\\sfx_dest"
 dest_dir_music = f"C:\\Users\\music"
 dest_dir_video = f"C:\\Users\\video_dest"
